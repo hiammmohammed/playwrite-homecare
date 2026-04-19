@@ -1,14 +1,18 @@
 import { Page } from '@playwright/test';
-import { environment } from '../config/environment';
 
 export class ProfilePage {
   constructor(private page: Page) {}
 
-  get name() {
-    return this.page.locator('a[href*="/patients/"]').first();
+
+  get firstPatient() {
+    return this.page.locator('tbody tr').first();
   }
 
-//  get email() {
-//     return this.page.locator('#profile-email');
-//   }
+  get patientName() {
+    return this.page.locator('tbody tr td:nth-child(2) a').first();
+  }
+
+  get profileHeader() {
+    return this.page.getByRole('heading');
+  }
 }

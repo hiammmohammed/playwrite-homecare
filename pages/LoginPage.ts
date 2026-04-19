@@ -25,32 +25,26 @@ export class LoginPage {
   }
 
   get errorMessage() {
-    return this.page.getByText('Invalid credentials'); 
-    
+    return this.page.getByText('Invalid credentials');
   }
 
- async login(email: string, password: string) {
-  await this.emailInput.fill(email);
-  await this.passwordInput.fill(password);
+  async login(email: string, password: string) {
+    await this.goto();
 
-  await Promise.all([
-    this.page.waitForNavigation(),
-    this.loginBtn.click()
-  ]);
+    await this.emailInput.fill(email);
+    await this.passwordInput.fill(password);
 
-    // if (rememberMe) {
-    //   await this.rememberMeCheckbox.check();
-    // }
-
+  
     await this.loginBtn.click();
+
+    await this.page.waitForURL(/dashboard/);
   }
 
   async expectLoginSuccess() {
-    await expect(this.page).not.toHaveURL(/auth\/login/);
+    await expect(this.page).toHaveURL(/dashboard/);
   }
 
   async expectLoginFailed() {
     await expect(this.errorMessage).toBeVisible();
   }
-
 }

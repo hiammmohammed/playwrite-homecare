@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../config/auth.fixture';
 import { environment } from '../../config/environment';
 
 test.describe('Token Redirect', () => {
