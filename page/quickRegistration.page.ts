@@ -82,8 +82,7 @@ export class QuickRegistrationPage {
         this.female = page.locator('#qr_gender_female');
 
         // Birth Date
-        this.birthDate = page.getByPlaceholder('DD/MM/YYYY');
-
+        this.birthDate = page.locator('p-datepicker[formcontrolname="birth"]');
         // Nationality
         this.nationality = page.locator('p-select[formcontrolname="country_id"]');
 
@@ -123,6 +122,9 @@ export class QuickRegistrationPage {
         this.successMessage = page.getByText('Patient created successfully');
     }
 
+    //test 
+
+
     async fillBasicInfo(patient: Patient) {
 
         await this.firstNameEn.fill(patient.firstName);
@@ -139,7 +141,15 @@ export class QuickRegistrationPage {
         else
             await this.female.click();
 
-        await this.birthDate.fill(patient.birthDate);
+        await this.birthDate.click();
+
+        const birthDateInput = this.page.locator('p-datepicker[formcontrolname="birth"] input');
+
+        await birthDateInput.click();
+        await birthDateInput.fill(patient.birthDate);
+        await birthDateInput.press('Enter');
+
+        await expect(birthDateInput).toHaveValue(patient.birthDate);
 
         await this.help.selectDropdown(this.nationality, patient.nationality);
 
@@ -175,5 +185,7 @@ export class QuickRegistrationPage {
         await expect(this.successMessage).toBeVisible();
 
     }
+
+
 
 }

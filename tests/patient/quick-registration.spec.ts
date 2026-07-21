@@ -16,14 +16,16 @@ test.describe('Patient Module', () => {
 
         const patient = PatientFactory.create();
 
+        console.log('PATIENT DATA:', patient);
+
         // Open Dashboard
         await page.goto('');
 
         // Login
-       await loginPage.login(
-    process.env.TEST_EMAIL!,
-    process.env.TEST_PASSWORD!
-    );
+        await loginPage.login(
+            process.env.TEST_EMAIL!,
+            process.env.TEST_PASSWORD!
+        );
 
         // Open Patient Module
         await patientsPage.openPatients();
@@ -31,7 +33,28 @@ test.describe('Patient Module', () => {
         // Open Quick Registration
         await patientsPage.openQuickRegistration();
 
+        // =========================
+        // Debug Translation
+        // =========================
+
+        await quickRegistration.firstNameEn.fill(patient.firstName);
+
+        console.log(
+            'English value:',
+            await quickRegistration.firstNameEn.inputValue()
+        );
+
+        await page.waitForTimeout(2000);
+
+        console.log(
+            'Arabic value:',
+            await quickRegistration.firstNameAr.inputValue()
+        );
+
+        // =========================
         // Create Patient
+        // =========================
+
         await quickRegistration.createPatient(patient);
 
         // Verify Success

@@ -4,17 +4,15 @@ export class Help {
 
     constructor(private page: Page) {}
 
-    async selectDropdown(
-        dropdown: Locator,
-        option: string
-    ) {
-
+ async selectDropdown(dropdown: Locator, option: string) {
         await dropdown.click();
 
-        await this.page
-            .getByText(option, { exact: true })
-            .click();
+        const optionLocator = this.page
+            .locator('[role="option"]:visible')
+            .filter({ hasText: option })
+            .first();
 
+        await optionLocator.click();
     }
 
     async waitLoading() {
